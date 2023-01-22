@@ -10,12 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
-
-static int	valid_map(char **map)
-{
-	
-}
+#include <stdio.h>
+#include <stdlib.h>
 
 static int	valid_map_content(char **map)
 {
@@ -45,6 +41,20 @@ static int	valid_map_content(char **map)
 	return (start != 1 || exit != 1 || item == 0);
 }
 
-int	parsing(char **map)
+int	main(void)
 {
+	char	**str;
+
+	str = malloc(sizeof(char *) * 4);
+	str[0] = malloc(sizeof(char) * 4);
+	str[1] = malloc(sizeof(char) * 4);
+	str[2] = malloc(sizeof(char) * 4);
+	str[0] = "P00";
+	str[1] = "C00";
+	str[2] = "00c";
+	str[3] = NULL;
+	if (valid_map_content(str))
+		printf("ERROR\n");
+	else
+		printf("FINE\n");
 }
