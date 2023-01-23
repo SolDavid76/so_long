@@ -6,55 +6,98 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 13:21:20 by djanusz           #+#    #+#             */
-/*   Updated: 2023/01/21 13:53:12 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/01/23 17:21:06 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include "so_long.h"
+
+char	**create_map(int fd)
+{
+	char	**res;
+	t_list	**tmp;
+	t_list	*lst;
+	int		i;
+	int		x;
+
+	x = 1;
+	lst = ft_lstnew(get_next_line(fd));
+	tmp = &lst;
+	while (x)
+	{
+		ft_lstadd_back(tmp, ft_lstnew(get_next_line(fd)));
+		if ((ft_lstlast(lst))->content == NULL)
+			x = 0;
+	}
+	res = malloc(sizeof(char *) * ft_lstsize(lst));
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (lst)
+	{
+		res[i] = lst->content;
+		lst = lst->next;
+		i++;
+	}
+	return (res);
+}
 
 static int	valid_map_content(char **map)
 {
 	int	i;
 	int	j;
-	int	start;
-	int	exit;
-	int	item;
+	int	data[3];
 
+	data[0] = 0;
+	data[1] = 0;
+	data[2] = 0;
 	i = -1;
-	start = 0;
-	exit = 0;
-	item = 0;
 	while (map[++i])
 	{
 		j = -1;
 		while (map[i][++j])
 		{
 			if (map[i][j] == 'P')
-				start++;
-			if (map[i][j] == 'E')
-				exit++;
-			if (map[i][j] == 'C')
-				item++;
+				data[0]++;
+			else if (map[i][j] == 'E')
+				data[1]++;
+			else if (map[i][j] == 'C')
+				data[2]++;
+			else if (map[i][j] != '0' && map[i][j] != '1' && map[i][j] != '\n')
+				return (1);
 		}
 	}
-	return (start != 1 || exit != 1 || item == 0);
+	return (data[0] != 1 || data[1] != 1 || data[2] == 0);
+}
+
+void	print_map(char **map)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			write(1, &map[i][j], 1);
+			j++;
+		}
+		i++;
+	}
 }
 
 int	main(void)
 {
-	char	**str;
+	int		fd;
+	char	**map;
 
-	str = malloc(sizeof(char *) * 4);
-	str[0] = malloc(sizeof(char) * 4);
-	str[1] = malloc(sizeof(char) * 4);
-	str[2] = malloc(sizeof(char) * 4);
-	str[0] = "P00";
-	str[1] = "C00";
-	str[2] = "00c";
-	str[3] = NULL;
-	if (valid_map_content(str))
-		printf("ERROR\n");
+	fd = open("map.ber", O_RDONLY);
+	map = create_map(fd);
+	print_map(map);
+	if (valid_map_content(map))
+		return (write(1, "ERROR\n", 6), 1);
 	else
-		printf("FINE\n");
+		return (write(1, "FINE\n", 5), 1);
 }

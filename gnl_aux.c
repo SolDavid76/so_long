@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   gnl_aux.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/23 14:43:27 by djanusz           #+#    #+#             */
+/*   Updated: 2023/01/23 14:43:30 by djanusz          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long.h"
 
-static int	ft_strlen(char *str)
+int	ft_strlen(char *str)
 {
 	int	i;
 
@@ -12,7 +24,7 @@ static int	ft_strlen(char *str)
 	return (i);
 }
 
-static int	ft_strchr(char *str, char c)
+int	ft_strchr(char *str, char c)
 {
 	int	i;
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   gnl.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/23 10:54:58 by djanusz           #+#    #+#             */
+/*   Updated: 2023/01/23 13:49:36 by djanusz          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long.h"
 
 static char	*ft_readstash(int fd, char *str)
@@ -34,5 +46,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = ft_get_line(stash);
 	stash = ft_clean(stash);
-	return (free(stash), NULL);
+	if (!line)
+		return (free(stash), NULL);
+	return (line);
 }
