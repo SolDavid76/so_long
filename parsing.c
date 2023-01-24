@@ -61,7 +61,7 @@ static int	valid_map_border(char **map)
 	j = 0;
 	while (map[i][j])
 	{
-		if (map[i][j] != '1')
+		if (ft_strlen(map[i]) != len || map[i][j] != '1')
 			return (1);
 		j++;
 	}
