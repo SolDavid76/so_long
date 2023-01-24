@@ -6,12 +6,15 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:19:14 by djanusz           #+#    #+#             */
-/*   Updated: 2023/01/23 16:38:49 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/01/24 13:55:17 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SO_LONG_H
 # define SO_LONG_H
+# define SPAWN 0
+# define EXIT 1
+# define ITEM 2
 # define BUFFER_SIZE 5
 # include <unistd.h>
 # include <stdlib.h>
@@ -37,5 +40,6 @@ t_list	*ft_lstnew(char *content);
 int		ft_lstsize(t_list *lst);
 t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
+void	ft_lstclear(t_list *lst);
 
 #endif

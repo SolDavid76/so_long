@@ -6,7 +6,7 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 14:42:56 by djanusz           #+#    #+#             */
-/*   Updated: 2023/01/23 17:10:22 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/01/24 15:08:41 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,14 @@ t_list	*ft_lstlast(t_list *lst)
 
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {
+	t_list	*last;
+
 	if (lst)
 	{
 		if (*lst)
 		{
-			while ((*lst)->next != NULL)
-				*lst = (*lst)->next;
-			(*lst)->next = new;
+			last = ft_lstlast(*lst);
+			last->next = new;
 		}
 		else
 			*lst = new;

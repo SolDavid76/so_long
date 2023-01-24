@@ -6,40 +6,66 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 13:21:20 by djanusz           #+#    #+#             */
-/*   Updated: 2023/01/23 17:21:06 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/01/24 15:21:05 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-char	**create_map(int fd)
+static char	**create_map(int fd)
 {
 	char	**res;
-	t_list	**tmp;
 	t_list	*lst;
+	t_list	*tmp;
 	int		i;
-	int		x;
 
-	x = 1;
 	lst = ft_lstnew(get_next_line(fd));
-	tmp = &lst;
-	while (x)
-	{
-		ft_lstadd_back(tmp, ft_lstnew(get_next_line(fd)));
-		if ((ft_lstlast(lst))->content == NULL)
-			x = 0;
-	}
+	while ((ft_lstlast(lst)->content) != NULL)
+		ft_lstadd_back(&lst, ft_lstnew(get_next_line(fd)));
 	res = malloc(sizeof(char *) * ft_lstsize(lst));
 	if (!res)
 		return (NULL);
 	i = 0;
 	while (lst)
 	{
-		res[i] = lst->content;
-		lst = lst->next;
-		i++;
+		tmp = lst->next;
+		res[i++] = lst->content;
+		free(lst);
+		lst = tmp;
 	}
 	return (res);
+}
+
+static int	valid_map_border(char **map)
+{
+	int	len;
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (map[i][j])
+	{
+		if (map[i][j] != '1')
+			return (1);
+		j++;
+	}
+	len = ft_strlen(map[0]);
+	while (map[i + 1])
+	{
+		if (ft_strlen(map[i]) != len
+			|| map[i][0] != '1' || map[i][len - 1] != '1')
+			return (1);
+		i++;
+	}
+	j = 0;
+	while (map[i][j])
+	{
+		if (map[i][j] != '1')
+			return (1);
+		j++;
+	}
+	return (0);
 }
 
 static int	valid_map_content(char **map)
@@ -48,9 +74,9 @@ static int	valid_map_content(char **map)
 	int	j;
 	int	data[3];
 
-	data[0] = 0;
-	data[1] = 0;
-	data[2] = 0;
+	data[SPAWN] = 0;
+	data[EXIT] = 0;
+	data[ITEM] = 0;
 	i = -1;
 	while (map[++i])
 	{
@@ -58,16 +84,16 @@ static int	valid_map_content(char **map)
 		while (map[i][++j])
 		{
 			if (map[i][j] == 'P')
-				data[0]++;
+				data[SPAWN]++;
 			else if (map[i][j] == 'E')
-				data[1]++;
+				data[EXIT]++;
 			else if (map[i][j] == 'C')
-				data[2]++;
+				data[ITEM]++;
 			else if (map[i][j] != '0' && map[i][j] != '1' && map[i][j] != '\n')
 				return (1);
 		}
 	}
-	return (data[0] != 1 || data[1] != 1 || data[2] == 0);
+	return (data[SPAWN] != 1 || data[EXIT] != 1 || data[ITEM] == 0);
 }
 
 void	print_map(char **map)
@@ -84,8 +110,22 @@ void	print_map(char **map)
 			write(1, &map[i][j], 1);
 			j++;
 		}
+		write(1, "\n", 1);
 		i++;
 	}
+}
+
+void	free_map(char **map)
+{
+	int	i;
+
+	i = 0;
+	while (map[i])
+	{
+		free(map[i]);
+		i++;
+	}
+	free(map);
 }
 
 int	main(void)
@@ -96,8 +136,8 @@ int	main(void)
 	fd = open("map.ber", O_RDONLY);
 	map = create_map(fd);
 	print_map(map);
-	if (valid_map_content(map))
-		return (write(1, "ERROR\n", 6), 1);
+	if (valid_map_border(map) || valid_map_content(map))
+		return (free_map(map), write(1, "ERROR\n", 6), 1);
 	else
-		return (write(1, "FINE\n", 5), 1);
+		return (free_map(map), write(1, "FINE\n", 5), 1);
 }

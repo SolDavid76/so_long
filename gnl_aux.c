@@ -6,7 +6,7 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 14:43:27 by djanusz           #+#    #+#             */
-/*   Updated: 2023/01/23 14:43:30 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/01/24 14:01:36 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*ft_get_line(char *str)
 		return (NULL);
 	while (str[i] && str[i] != '\n')
 		i++;
-	res = malloc(sizeof(char) * (i + 2));
+	res = malloc(sizeof(char) * i + 1);
 	if (!res)
 		return (NULL);
 	i = 0;
@@ -86,11 +86,11 @@ char	*ft_get_line(char *str)
 		res[i] = str[i];
 		i++;
 	}
-	if (str[i] == '\n')
-	{
-		res[i] = str[i];
-		i++;
-	}
+//	if (str[i] == '\n')
+//	{
+//		res[i] = str[i];
+//		i++;
+//	}
 	res[i] = '\0';
 	return (res);
 }
