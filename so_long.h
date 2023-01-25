@@ -6,7 +6,7 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:19:14 by djanusz           #+#    #+#             */
-/*   Updated: 2023/01/24 13:55:17 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/01/25 17:33:00 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,17 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
+/* parsing */
+char	**create_map(int fd);
+int		valid_map_border(char **map);
+int		valid_map_content(char **map);
+int		ft_mapchr(char **map, char c);
+int		ft_strchr(char *str, char c);
+int		path_finding_aux(char **map, int x, int y);
+
 /* gnl */
 char	*get_next_line(int fd);
 int		ft_strlen(char *str);
-int		ft_strchr(char *str, char c);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_get_line(char *str);
 char	*ft_clean(char *str);

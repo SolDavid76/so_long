@@ -6,13 +6,13 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 13:21:20 by djanusz           #+#    #+#             */
-/*   Updated: 2023/01/24 15:21:05 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/01/25 15:54:37 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-static char	**create_map(int fd)
+char	**create_map(int fd)
 {
 	char	**res;
 	t_list	*lst;
@@ -36,7 +36,7 @@ static char	**create_map(int fd)
 	return (res);
 }
 
-static int	valid_map_border(char **map)
+int	valid_map_border(char **map)
 {
 	int	len;
 	int	i;
@@ -46,29 +46,26 @@ static int	valid_map_border(char **map)
 	j = 0;
 	while (map[i][j])
 	{
-		if (map[i][j] != '1')
+		if (map[i][j++] != '1')
 			return (1);
-		j++;
 	}
 	len = ft_strlen(map[0]);
 	while (map[i + 1])
 	{
 		if (ft_strlen(map[i]) != len
-			|| map[i][0] != '1' || map[i][len - 1] != '1')
+			|| map[i][0] != '1' || map[i++][len - 1] != '1')
 			return (1);
-		i++;
 	}
 	j = 0;
 	while (map[i][j])
 	{
-		if (ft_strlen(map[i]) != len || map[i][j] != '1')
+		if (ft_strlen(map[i]) != len || map[i][j++] != '1')
 			return (1);
-		j++;
 	}
 	return (0);
 }
 
-static int	valid_map_content(char **map)
+int	valid_map_content(char **map)
 {
 	int	i;
 	int	j;
@@ -94,50 +91,4 @@ static int	valid_map_content(char **map)
 		}
 	}
 	return (data[SPAWN] != 1 || data[EXIT] != 1 || data[ITEM] == 0);
-}
-
-void	print_map(char **map)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (map[i])
-	{
-		j = 0;
-		while (map[i][j])
-		{
-			write(1, &map[i][j], 1);
-			j++;
-		}
-		write(1, "\n", 1);
-		i++;
-	}
-}
-
-void	free_map(char **map)
-{
-	int	i;
-
-	i = 0;
-	while (map[i])
-	{
-		free(map[i]);
-		i++;
-	}
-	free(map);
-}
-
-int	main(void)
-{
-	int		fd;
-	char	**map;
-
-	fd = open("map.ber", O_RDONLY);
-	map = create_map(fd);
-	print_map(map);
-	if (valid_map_border(map) || valid_map_content(map))
-		return (free_map(map), write(1, "ERROR\n", 6), 1);
-	else
-		return (free_map(map), write(1, "FINE\n", 5), 1);
 }
