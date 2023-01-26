@@ -6,7 +6,7 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:19:14 by djanusz           #+#    #+#             */
-/*   Updated: 2023/01/25 17:33:00 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/01/26 14:35:39 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # define EXIT 1
 # define ITEM 2
 # define BUFFER_SIZE 5
+# include "minilibx-linux/mlx.h"
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
@@ -27,17 +28,22 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
+/* mapping */
+char	**create_map(int fd);
+void	print_map(char **map);
+char	**dup_map(char **map);
+void	free_map(char **map);
+
 /* parsing */
 char	**create_map(int fd);
 int		valid_map_border(char **map);
 int		valid_map_content(char **map);
-int		ft_mapchr(char **map, char c);
-int		ft_strchr(char *str, char c);
-int		path_finding_aux(char **map, int x, int y);
+int		path_finding(char **map);
 
 /* gnl */
 char	*get_next_line(int fd);
 int		ft_strlen(char *str);
+int		ft_strchr(char *str, char c);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_get_line(char *str);
 char	*ft_clean(char *str);

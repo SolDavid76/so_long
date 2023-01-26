@@ -6,7 +6,7 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 14:35:48 by djanusz           #+#    #+#             */
-/*   Updated: 2023/01/25 18:51:48 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/01/26 14:11:10 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_strchr(char *str, char c)
 	return (0);
 }
 
-int	ft_mapchr(char **map, char c)
+static int	ft_mapchr(char **map, char c)
 {
 	int	i;
 
@@ -41,33 +41,29 @@ int	ft_mapchr(char **map, char c)
 	}
 	return (0);
 }
-//note pour demain : faire un accumulateur c'est de la merde trouve une meilleure idee merci :)
-int	path_finding_aux(char **map, int x, int y)
+
+static int	path_finding_aux(char **map, int x, int y)
 {
 	int	res;
 	int	i;
 
 	i = 1;
 	res = 0;
-	while (map[y][x + i] && map[y][x + i] != '1')
+	while (map[y][x + i] && map[y][x + i] != '1' && map[y][x + i] != 'X')
 		map[y][x + i++] = 'X';
-	if (i != 1)
-		res = 1;
+	res += i - 1;
 	i = 1;
-	while (map[y][x - i] && map[y][x - i] != '1')
+	while (map[y][x - i] && map[y][x - i] != '1' && map[y][x - i] != 'X')
 		map[y][x - i++] = 'X';
-	if (i != 1)
-		res = 1;
+	res += i - 1;
 	i = 1;
-	while (map[y + i][x] && map[y + i][x] != '1')
+	while (map[y + i][x] && map[y + i][x] != '1' && map[y + i][x] != 'X')
 		map[y + i++][x] = 'X';
-	if (i != 1)
-		res = 1;
+	res += i - 1;
 	i = 1;
-	while (map[y - i][x] && map[y - i][x] != '1')
+	while (map[y - i][x] && map[y - i][x] != '1' && map[y - i][x] != 'X')
 		map[y - i++][x] = 'X';
-	if (i != 1)
-		res = 1;
+	res += i - 1;
 	return (res);
 }
 
@@ -81,18 +77,21 @@ int	path_finding(char **map)
 	map[ft_mapchr(map, 'P')][ft_strchr(map[ft_mapchr(map, 'P')], 'P')] = 'X';
 	while (modif)
 	{
+		modif = 0;
 		i = 0;
-		while (map[i]) //sould improve to run faster with may be with ft_mapchr
+		while (map[i])
 		{
 			j = 0;
-			while (map[i][j]) //sould improve to run faster with ft_strchr
+			while (map[i][j] && ft_strchr(map[i], 'X'))
 			{
 				if (map[i][j] == 'X')
-					modif = path_finding_aux(map, j, i); //idk how check if the tracking is ended
+					modif += path_finding_aux(map, j, i);
 				j++;
 			}
 			i++;
 		}
+		if (modif == 0)
+			return (ft_mapchr(map, 'E') || ft_mapchr(map, 'C'));
 	}
-	return (1);
+	return (0);
 }

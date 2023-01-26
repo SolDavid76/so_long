@@ -6,7 +6,7 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:07:01 by djanusz           #+#    #+#             */
-/*   Updated: 2023/01/25 18:42:55 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/01/26 15:09:45 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	**dup_map(char **map)
 	i = 0;
 	while (map[i])
 		i++;
-	res = malloc(sizeof(char *) * i + 1);
+	res = malloc(sizeof(char *) * (i + 1));
 	if (!res)
 		return (NULL);
 	i = 0;
@@ -81,28 +81,8 @@ int	main(void)
 
 	fd = open("map.ber", O_RDONLY);
 	map = create_map(fd);
-	print_map(map);
-	printf("x : %d\n", ft_strchr(map[ft_mapchr(map, 'P')], 'P'));
-	printf("y : %d\n", ft_mapchr(map, 'P'));
 	fake = dup_map(map);
-	printf("res = %d\n", path_finding_aux(fake, 1, 2));
-	print_map(fake);
-	free_map(fake);
-	if (valid_map_border(map) || valid_map_content(map))
-		return (free_map(map), write(1, "ERROR\n", 6), 1);
-	else
-		return (free_map(map), write(1, "FINE\n", 5), 1);
+	if (valid_map_border(map) || valid_map_content(map) || path_finding(fake))
+		return (free_map(map), free_map(fake), write(1, "ERROR\n", 6), 1);
+	return (free_map(map), free_map(fake),write(1, "FINE\n", 5), 1);
 }
-
-/*
-int	main(void)
-{
-	void	*mlx;
-	void	*window;
-
-	mlx = mlx_init();
-	window = mlx_new_window(mlx, 400, 400, "Hello world");
-	mlx_loop(mlx);
-	return (0);
-}
-*/
