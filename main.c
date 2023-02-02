@@ -6,83 +6,24 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 15:07:01 by djanusz           #+#    #+#             */
-/*   Updated: 2023/01/26 15:09:45 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/02 12:42:12 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	print_map(char **map)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (map[i])
-	{
-		j = 0;
-		while (map[i][j])
-		{
-			write(1, &map[i][j], 1);
-			j++;
-		}
-		write(1, "\n", 1);
-		i++;
-	}
-}
-
-char	**dup_map(char **map)
-{
-	char	**res;
-	int		i;
-	int		j;
-
-	i = 0;
-	while (map[i])
-		i++;
-	res = malloc(sizeof(char *) * (i + 1));
-	if (!res)
-		return (NULL);
-	i = 0;
-	while (map[i])
-	{
-		j = 0;
-		res[i] = malloc(sizeof(char) * ft_strlen(map[i]) + 1);
-		while (map[i][j])
-		{
-			res[i][j] = map[i][j];
-			j++;
-		}
-		res[i][j] = '\0';
-		i++;
-	}
-	res[i] = NULL;
-	return (res);
-}
-
-void	free_map(char **map)
-{
-	int	i;
-
-	i = 0;
-	while (map[i])
-	{
-		free(map[i]);
-		i++;
-	}
-	free(map);
-}
-
 int	main(void)
 {
-	int		fd;
 	char	**map;
-	char	**fake;
+	t_win	win;
 
-	fd = open("map.ber", O_RDONLY);
-	map = create_map(fd);
-	fake = dup_map(map);
-	if (valid_map_border(map) || valid_map_content(map) || path_finding(fake))
-		return (free_map(map), free_map(fake), write(1, "ERROR\n", 6), 1);
-	return (free_map(map), free_map(fake),write(1, "FINE\n", 5), 1);
+	map = parsing();
+	if (!map)
+		return (1);
+	win = create_window(map);
+	test((win.frame), 0, 0, 0x0000FF);
+	test((win.frame), 50, 0, 0xFFFFFF);
+	test((win.frame), 100, 0, 0xFF0000);
+	mlx_put_image_to_window(win.mlx, win.ptr, win.frame.ptr, 0, 0);
+	mlx_loop(win.mlx);
 }

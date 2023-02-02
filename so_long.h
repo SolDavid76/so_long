@@ -6,7 +6,7 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:19:14 by djanusz           #+#    #+#             */
-/*   Updated: 2023/01/26 14:35:39 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/02 12:40:15 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,25 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
-/* mapping */
-char	**create_map(int fd);
-void	print_map(char **map);
-char	**dup_map(char **map);
-void	free_map(char **map);
+typedef struct s_img
+{
+	void	*ptr;
+	char	*pixels;
+	int		bpp;
+	int		len;
+	int		endian;
+}			t_img;
 
-/* parsing */
-char	**create_map(int fd);
-int		valid_map_border(char **map);
-int		valid_map_content(char **map);
-int		path_finding(char **map);
+typedef struct s_win
+{
+	void	*mlx;
+	void	*ptr;
+	int		width;
+	int		height;
+	t_img	frame;
+}			t_win;
+
+void	test(t_img img, int x, int y, int color);
 
 /* gnl */
 char	*get_next_line(int fd);
@@ -54,5 +62,22 @@ int		ft_lstsize(t_list *lst);
 t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstclear(t_list *lst);
+
+/* mapping */
+int		ft_maplen(char **map);
+char	**create_map(int fd);
+void	print_map(char **map);
+char	**dup_map(char **map);
+void	free_map(char **map);
+
+/* parsing */
+char	**create_map(int fd);
+int		valid_map_border(char **map);
+int		valid_map_content(char **map);
+int		path_finding(char **map);
+char	**parsing(void);
+
+/* graphics */
+t_win	create_window(char **map);
 
 #endif

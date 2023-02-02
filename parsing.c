@@ -6,7 +6,7 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 13:21:20 by djanusz           #+#    #+#             */
-/*   Updated: 2023/01/25 15:54:37 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/01 15:16:15 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,4 +91,33 @@ int	valid_map_content(char **map)
 		}
 	}
 	return (data[SPAWN] != 1 || data[EXIT] != 1 || data[ITEM] == 0);
+}
+
+char	**parsing(void)
+{
+	int		fd;
+	char	**map;
+	char	**fake;
+
+	fd = open("map.ber", O_RDONLY);
+	if (fd < 0)
+		return (write(1, "FILE NOT FOUND !\n", 17), NULL);
+	map = create_map(fd);
+	fake = dup_map(map);
+	if (valid_map_border(fake))
+	{
+		free_map(map);
+		return (free_map(fake), write(1, "INVALID MAP BORDER !\n", 21), NULL);
+	}
+	if (valid_map_content(fake))
+	{
+		free_map(map);
+		return (free_map(fake), write(1, "INVALID MAP CONTENT !\n", 22), NULL);
+	}
+	if (path_finding(fake))
+	{
+		free_map(map);
+		return (free_map(fake), write(1, "INVALID PATH !\n", 15), NULL);
+	}
+	return (free_map(fake), map);
 }
