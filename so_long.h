@@ -6,7 +6,7 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:19:14 by djanusz           #+#    #+#             */
-/*   Updated: 2023/02/02 12:40:15 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/06 14:18:01 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_list
 typedef struct s_img
 {
 	void	*ptr;
-	char	*pixels;
+	char	*pxl;
 	int		bpp;
 	int		len;
 	int		endian;
@@ -44,9 +44,11 @@ typedef struct s_win
 	int		width;
 	int		height;
 	t_img	frame;
+	t_img	wall;
+	t_img	player;
 }			t_win;
 
-void	test(t_img img, int x, int y, int color);
+//void	test(t_img img, int x, int y, int color);
 
 /* gnl */
 char	*get_next_line(int fd);
@@ -79,5 +81,8 @@ char	**parsing(void);
 
 /* graphics */
 t_win	create_window(char **map);
+t_img	ft_image_from_xpm(t_win win, char *path, int width, int height);
+void    past_img_to_frame(t_img frame, t_img img, int x, int y);
+void	rendering(t_win win, char **map);
 
 #endif

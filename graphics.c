@@ -6,7 +6,7 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 14:23:43 by djanusz           #+#    #+#             */
-/*   Updated: 2023/02/02 12:45:41 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/06 14:18:36 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,25 +22,27 @@ t_win	create_window(char **map)
 	win.height = ft_maplen(map) * 50;
 	win.ptr = mlx_new_window(win.mlx, win.width, win.height, "so_long");
 	img.ptr = mlx_new_image(win.mlx, win.width, win.height);
-	img.pixels = mlx_get_data_addr(img.ptr, &img.bpp, &img.len, &img.endian);
+	img.pxl = mlx_get_data_addr(img.ptr, &img.bpp, &img.len, &img.endian);
 	win.frame = img;
 	return (win);
 }
 
-t_img	image_from_xpm(t_win win, char *path, int width, int height)
+t_img	ft_image_from_xpm(t_win win, char *path, int width, int height)
 {
 	t_img	img;
 
 	img.ptr = mlx_xpm_file_to_image(win.mlx, path, &width, &height);
-	img.pixels = mlx_get_data_addr(img.ptr, &img.bpp, &img.len, &img.endian);
+	img.pxl = mlx_get_data_addr(img.ptr, &img.bpp, &img.len, &img.endian);
 	return (img);
 }
 
-void	test(t_img img, int x, int y, int color)
+void	past_img_to_frame(t_img frame, t_img img, int x, int y)
 {
-	char	*pixel;
+	char	*dst;
+	char	*src;
 	int		i;
 	int		j;
+	int		p;
 
 	i = 0;
 	while (i < 50)
@@ -48,10 +50,37 @@ void	test(t_img img, int x, int y, int color)
 		j = 0;
 		while (j < 50)
 		{
-			pixel = img.pixels + ((i + y) * img.len + (j + x) * (img.bpp / 8));
-			*(int *)pixel = color;
+			src = img.pxl + (i * img.len + j * (img.bpp / 8));
+			dst = frame.pxl + ((i + y) * frame.len + (j + x) * (frame.bpp / 8));
+			p = 0;
+			while (p < 4)
+			{
+				dst[p] = src[p];
+				p++;
+			}
 			j++;
 		}
 		i++;
+	}
+}
+
+void	rendering(t_win win, char **map)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (map[i][j] == '1')
+				past_img_to_frame(win.frame, win.wall, j * 50, i * 50);
+			if (map[i][j] == 'P')
+				past_img_to_frame(win.frame, win.player, j * 50, i * 50);
+			j++;
+		}
+	i++;
 	}
 }

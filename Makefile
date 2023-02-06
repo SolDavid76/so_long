@@ -1,4 +1,4 @@
-SRCS	= *.c
+SRCS	= gnl_aux.c gnl.c graphics.c lst.c main.c mapping.c parsing.c path_finding.c
 
 OBJS	= ${SRCS:.c=.o}
 
@@ -14,7 +14,7 @@ CFLAGS	= -Wall -Wextra -Werror
 			${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
 ${NAME}:	${OBJS}
-			${CC} -o ${NAME} ${OBJS}
+			${CC} -o ${NAME} ${OBJS} minilibx-linux/libmlx_Linux.a -L -I minilibx-linux/mlx.h -lXext -lX11 -lm
 
 all:		${NAME}
 
