@@ -6,7 +6,7 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 13:21:20 by djanusz           #+#    #+#             */
-/*   Updated: 2023/02/01 15:16:15 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/07 16:59:02 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	valid_map_content(char **map)
 				data[EXIT]++;
 			else if (map[i][j] == 'C')
 				data[ITEM]++;
-			else if (map[i][j] != '0' && map[i][j] != '1' && map[i][j] != '\n')
+			else if (map[i][j] != '0' && map[i][j] != '1')
 				return (1);
 		}
 	}

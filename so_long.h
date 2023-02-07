@@ -6,7 +6,7 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:19:14 by djanusz           #+#    #+#             */
-/*   Updated: 2023/02/06 14:18:01 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/07 18:17:20 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,18 @@ typedef struct s_img
 	int		endian;
 }			t_img;
 
+typedef struct s_map
+{
+	char	**str;
+	int		x_exit;
+	int		y_exit;
+	t_img	grass;
+	t_img	wall;
+	t_img	item;
+	t_img	exit;
+	t_img	player;
+}			t_map;
+
 typedef struct s_win
 {
 	void	*mlx;
@@ -44,11 +56,8 @@ typedef struct s_win
 	int		width;
 	int		height;
 	t_img	frame;
-	t_img	wall;
-	t_img	player;
+	t_map	map;
 }			t_win;
-
-//void	test(t_img img, int x, int y, int color);
 
 /* gnl */
 char	*get_next_line(int fd);
@@ -67,8 +76,8 @@ void	ft_lstclear(t_list *lst);
 
 /* mapping */
 int		ft_maplen(char **map);
+int		ft_mapchr(char **map, char c);
 char	**create_map(int fd);
-void	print_map(char **map);
 char	**dup_map(char **map);
 void	free_map(char **map);
 
@@ -82,7 +91,11 @@ char	**parsing(void);
 /* graphics */
 t_win	create_window(char **map);
 t_img	ft_image_from_xpm(t_win win, char *path, int width, int height);
-void    past_img_to_frame(t_img frame, t_img img, int x, int y);
+void	past_img_to_frame(t_img frame, t_img img, int x, int y);
 void	rendering(t_win win, char **map);
+
+/* event */
+int		handle_input(int key, t_win *win);
+int		move(t_win win, char **map, int key);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 14:35:48 by djanusz           #+#    #+#             */
-/*   Updated: 2023/01/26 14:11:10 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/07 17:18:23 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_strchr(char *str, char c)
 	return (0);
 }
 
-static int	ft_mapchr(char **map, char c)
+int	ft_mapchr(char **map, char c)
 {
 	int	i;
 

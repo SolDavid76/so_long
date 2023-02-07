@@ -6,7 +6,7 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 14:23:43 by djanusz           #+#    #+#             */
-/*   Updated: 2023/02/06 14:18:36 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/07 18:36:36 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,20 @@ void	rendering(t_win win, char **map)
 		while (map[i][j])
 		{
 			if (map[i][j] == '1')
-				past_img_to_frame(win.frame, win.wall, j * 50, i * 50);
-			if (map[i][j] == 'P')
-				past_img_to_frame(win.frame, win.player, j * 50, i * 50);
+				past_img_to_frame(win.frame, win.map.wall, j * 50, i * 50);
+			else if (map[i][j] == 'C')
+				past_img_to_frame(win.frame, win.map.item, j * 50, i * 50);
+			else if (map[i][j] == 'E')
+				past_img_to_frame(win.frame, win.map.exit, j * 50, i * 50);
+			else if (map[i][j] == 'P')
+				past_img_to_frame(win.frame, win.map.player, j * 50, i * 50);
+			else
+				past_img_to_frame(win.frame, win.map.grass, j * 50, i * 50);
 			j++;
 		}
 	i++;
 	}
+	if (ft_mapchr(map, 'P') != win.map.y_exit || ft_strchr(map[ft_mapchr(map, 'P')], 'P') != win.map.x_exit)
+		past_img_to_frame(win.frame, win.map.exit, win.map.x_exit * 50, win.map.y_exit * 50); // <- sa grand mew 
+	mlx_put_image_to_window(win.mlx, win.ptr, win.frame.ptr, 0, 0);
 }
