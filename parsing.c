@@ -6,13 +6,13 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 13:21:20 by djanusz           #+#    #+#             */
-/*   Updated: 2023/02/07 16:59:02 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/08 16:23:54 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-char	**create_map(int fd)
+static char	**create_map(int fd)
 {
 	char	**res;
 	t_list	*lst;
@@ -36,7 +36,7 @@ char	**create_map(int fd)
 	return (res);
 }
 
-int	valid_map_border(char **map)
+static int	valid_map_border(char **map)
 {
 	int	len;
 	int	i;
@@ -65,7 +65,7 @@ int	valid_map_border(char **map)
 	return (0);
 }
 
-int	valid_map_content(char **map)
+static int	valid_map_content(char **map)
 {
 	int	i;
 	int	j;
@@ -93,13 +93,13 @@ int	valid_map_content(char **map)
 	return (data[SPAWN] != 1 || data[EXIT] != 1 || data[ITEM] == 0);
 }
 
-char	**parsing(void)
+char	**parsing(char *map_path)
 {
 	int		fd;
 	char	**map;
 	char	**fake;
 
-	fd = open("map.ber", O_RDONLY);
+	fd = open(map_path, O_RDONLY);
 	if (fd < 0)
 		return (write(1, "FILE NOT FOUND !\n", 17), NULL);
 	map = create_map(fd);

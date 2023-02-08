@@ -6,7 +6,7 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 14:23:43 by djanusz           #+#    #+#             */
-/*   Updated: 2023/02/07 18:36:36 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/08 16:54:01 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,5 @@ void	rendering(t_win win, char **map)
 		}
 	i++;
 	}
-	if (ft_mapchr(map, 'P') != win.map.y_exit || ft_strchr(map[ft_mapchr(map, 'P')], 'P') != win.map.x_exit)
-		past_img_to_frame(win.frame, win.map.exit, win.map.x_exit * 50, win.map.y_exit * 50); // <- sa grand mew 
 	mlx_put_image_to_window(win.mlx, win.ptr, win.frame.ptr, 0, 0);
 }

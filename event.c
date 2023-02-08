@@ -6,18 +6,49 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 09:44:28 by djanusz           #+#    #+#             */
-/*   Updated: 2023/02/07 18:33:36 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/08 11:47:08 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
+static int	ft_putchar(char c)
+{
+	return (write(1, &c, 1));
+}
+
+static int	ft_putnbr(unsigned int nb)
+{
+	int	digit;
+	int	res;
+
+	res = 0;
+	if (nb < 10)
+		res += ft_putchar(nb + 48);
+	else
+	{
+		digit = nb % 10;
+		nb /= 10;
+		res += ft_putnbr(nb);
+		res += ft_putchar(digit + 48);
+	}
+	return (res);
+}
+
 int	handle_input(int key, t_win *win)
 {
+	static unsigned int	i = 1;
+
 	if (key == 65307)
-		exit(0);
+		ft_exit(*win);
 	if (key == 97 || key == 100 || key == 115 || key == 119)
-		move(*win, win->map.str, key);
+	{
+		if (move(*win, win->map.str, key))
+		{
+			ft_putnbr(i++);
+			write(1, "\n", 1);
+		}
+	}
 	return (0);
 }
 
@@ -38,10 +69,11 @@ int	move(t_win win, char **map, int key)
 		map[y - 1][x] = 'P';
 	else
 		return (0);
-//	if (ft_mapchr(win.map.str, 'E')) <--- this is dog shit.
 	map[y][x] = '0';
-//	else
-//		map[y][x] = 'E';
+	if (map[win.map.y_exit][win.map.x_exit] == '0')
+		map[y][x] = 'E';
+	if (!ft_mapchr(map, 'C') && !ft_mapchr(map, 'E'))
+		ft_exit(win);
 	rendering(win, win.map.str);
 	return (1);
 }

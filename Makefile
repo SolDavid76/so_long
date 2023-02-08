@@ -1,4 +1,4 @@
-SRCS	= gnl_aux.c gnl.c graphics.c lst.c main.c mapping.c parsing.c path_finding.c
+SRCS	= event.c gnl_aux.c gnl.c graphics.c lst.c main.c mapping.c parsing.c path_finding.c
 
 OBJS	= ${SRCS:.c=.o}
 

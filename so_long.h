@@ -6,7 +6,7 @@
 /*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:19:14 by djanusz           #+#    #+#             */
-/*   Updated: 2023/02/07 18:17:20 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/08 16:22:31 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,12 @@ void	ft_lstclear(t_list *lst);
 /* mapping */
 int		ft_maplen(char **map);
 int		ft_mapchr(char **map, char c);
-char	**create_map(int fd);
 char	**dup_map(char **map);
 void	free_map(char **map);
 
 /* parsing */
-char	**create_map(int fd);
-int		valid_map_border(char **map);
-int		valid_map_content(char **map);
+char	**parsing(char *map_path);
 int		path_finding(char **map);
-char	**parsing(void);
 
 /* graphics */
 t_win	create_window(char **map);
@@ -97,5 +93,6 @@ void	rendering(t_win win, char **map);
 /* event */
 int		handle_input(int key, t_win *win);
 int		move(t_win win, char **map, int key);
+void	ft_exit(t_win win);
 
 #endif
