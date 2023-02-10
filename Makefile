@@ -1,28 +1,41 @@
-SRCS	= event.c gnl_aux.c gnl.c graphics.c lst.c main.c mapping.c parsing.c path_finding.c
+SRCS_DIR	= src/
 
-OBJS	= ${SRCS:.c=.o}
+SRC			= event.c gnl_aux.c gnl.c graphics.c lst.c main.c mapping.c parsing.c path_finding.c
 
-NAME	= game
+SRCS		= $(addprefix $(SRCS_DIR), $(SRC))
 
-CC		= gcc
+OBJS_DIR	= obj/
 
-RM		= rm -f
+OBJ			= ${SRC:.c=.o}
 
-CFLAGS	= -Wall -Wextra -Werror
+OBJS		= $(addprefix $(OBJS_DIR), $(OBJ))
 
-.c.o:
-			${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
+NAME		= so_long
+
+CC			= gcc
+
+CFLAGS		= -Wall -Wextra -Werror
+
+MLX			= minilibx-linux/libmlx_Linux.a -L -I minilibx-linux/mlx.h -lXext -lX11 -lm
+
+INCS		= -I ./include/
+
+all:		${OBJS_DIR} ${NAME}
+
+${OBJS_DIR}:
+			mkdir ${OBJS_DIR}
+
+${OBJS_DIR}%.o: ${SRCS_DIR}%.c
+			${CC} ${CFLAGS} -c $< -o $@ ${INCS}
 
 ${NAME}:	${OBJS}
-			${CC} -o ${NAME} ${OBJS} minilibx-linux/libmlx_Linux.a -L -I minilibx-linux/mlx.h -lXext -lX11 -lm
-
-all:		${NAME}
+			${CC} ${FLAGS} ${OBJS} ${MLX} -o ${NAME}
 
 clean:
-			${RM} ${OBJS}
+			rm -rf ${OBJS_DIR}
 
 fclean:		clean
-			${RM} ${NAME}
+			rm -f ${NAME}
 
 re:			fclean all
 

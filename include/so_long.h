@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 10:19:14 by djanusz           #+#    #+#             */
-/*   Updated: 2023/02/08 16:22:31 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/10 12:13:39 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@
 # define EXIT 1
 # define ITEM 2
 # define BUFFER_SIZE 5
-# include "minilibx-linux/mlx.h"
+# include "../minilibx-linux/mlx.h"
+# include <X11/X.h>
+# include <X11/keysym.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <fcntl.h>
-# include <stdio.h>
 
 typedef struct s_list
 {
@@ -93,6 +94,6 @@ void	rendering(t_win win, char **map);
 /* event */
 int		handle_input(int key, t_win *win);
 int		move(t_win win, char **map, int key);
-void	ft_exit(t_win win);
+int		ft_exit(t_win *win);
 
 #endif

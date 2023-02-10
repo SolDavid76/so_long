@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   event.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: djanusz <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: djanusz <djanusz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 09:44:28 by djanusz           #+#    #+#             */
-/*   Updated: 2023/02/08 11:47:08 by djanusz          ###   ########.fr       */
+/*   Updated: 2023/02/09 15:40:44 by djanusz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	handle_input(int key, t_win *win)
 	static unsigned int	i = 1;
 
 	if (key == 65307)
-		ft_exit(*win);
+		ft_exit(win);
 	if (key == 97 || key == 100 || key == 115 || key == 119)
 	{
 		if (move(*win, win->map.str, key))
@@ -73,7 +73,7 @@ int	move(t_win win, char **map, int key)
 	if (map[win.map.y_exit][win.map.x_exit] == '0')
 		map[y][x] = 'E';
 	if (!ft_mapchr(map, 'C') && !ft_mapchr(map, 'E'))
-		ft_exit(win);
+		ft_exit(&win);
 	rendering(win, win.map.str);
 	return (1);
 }
